@@ -40,13 +40,25 @@ public class AnimeController {
 
     // second solution with response status
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAnimes() {
-        return new ResponseEntity<>(animeService.getAnimes(), HttpStatus.OK);
+    public ResponseEntity<Object> getAnimes(@RequestParam(required = false) boolean sorted,
+                                            @RequestParam(required = false, defaultValue = "0") double minimum,
+                                            @RequestParam(required = false, defaultValue = "" + Integer.MAX_VALUE) int pageSize) {
+        return new ResponseEntity<>(animeService.getAnimes(sorted, minimum, pageSize), HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAnime(@PathVariable int id) {
-        return new ResponseEntity<>(animeService.getAnime(id), HttpStatus.OK);
+    public ResponseEntity<Object> getAnimeById(@PathVariable int id) {
+        return new ResponseEntity<>(animeService.getAnimeById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "title/{title}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAnimeByTitle(@PathVariable String title) {
+        return new ResponseEntity<>(animeService.getAnimeByTitle(title), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "genre/{genre}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAnimesByGenre(@PathVariable String genre) {
+        return new ResponseEntity<>(animeService.getAnimesByGenre(genre), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
